@@ -8,8 +8,8 @@ import type { Metadata } from "next"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Portfolio | Your Name",
-  description: "Personal portfolio website showcasing projects and skills",
+  title: "Ryan Van Valkenburg | Portfolio",
+  description: "Frontend developer portfolio showcasing projects and skills in React, Next.js, and modern web technologies",
 }
 
 export default function RootLayout({
