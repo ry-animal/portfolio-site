@@ -100,7 +100,7 @@ export default function Skills() {
           // Stagger the animations slightly
           setTimeout(() => {
             setVisibleSkills(initialSkillsState)
-          }, 200)
+          }, 500)
         }
       },
       { threshold: 0.2 } // Trigger when 20% of the element is visible
@@ -131,7 +131,7 @@ export default function Skills() {
         })
 
       setVisibleSkills(newSkillsState)
-    }, 100)
+    }, 300)
   }, [activeTab])
 
   return (
@@ -166,8 +166,8 @@ export default function Skills() {
                       </div>
                       <Progress
                         value={visibleSkills[`${category.id}-${skill.name}`] ? skill.level : 0}
-                        className="h-2 transition-all duration-1000 ease-out"
-                        style={{ transitionDelay: `${index * 100}ms` }}
+                        className="h-2 transition-all duration-[2500ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                        style={{ transitionDelay: `${index * 250}ms` }}
                       />
                     </div>
                   ))}
