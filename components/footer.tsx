@@ -1,4 +1,4 @@
-import { Github, Linkedin, Twitter } from "lucide-react"
+import { Github, Linkedin, Twitter, MapPin } from "lucide-react"
 import { useEffect, useRef } from "react"
 
 export default function Footer() {
@@ -29,6 +29,10 @@ export default function Footer() {
       <div className="container">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
+            <div className="flex items-center">
+              <MapPin className="h-4 w-4 mr-1 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">Seattle, Wa</span>
+            </div>
             <p className="text-sm text-muted-foreground mt-1">&copy; {currentYear} Ryan Van Valkenburg. All rights reserved.</p>
           </div>
 

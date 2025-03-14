@@ -12,16 +12,12 @@ export default function About() {
 
         <div className="grid md:grid-cols-2 gap-2 items-center">
           <div className="order-2 md:order-1">
-            <h3 className="text-2xl font-semibold mb-3">Software Engineer</h3>
+            <h3 className="text-2xl font-semibold mb-3">Software Engineer - AI and Blockchain Enthusiast</h3>
             <p className="text-muted-foreground mb-3">
-              Hello! I&apos;m a passionate frontend developer with expertise in creating immersive digital experiences. With
-              a strong foundation in modern web technologies and a keen eye for design, I specialize in building
-              responsive, accessible, and performant web applications.
+              Hello! I&apos;m a passionate frontend developer based in San Francisco with expertise in React, Next.js, and modern JavaScript frameworks. I focus on creating responsive, accessible, and visually appealing web applications that deliver exceptional user experiences.
             </p>
             <p className="text-muted-foreground mb-4">
-              My journey in web development began 5 years ago, and since then, I&apos;ve worked on a diverse range of
-              projects, from e-commerce platforms to interactive data visualizations. I&apos;m constantly exploring new
-              technologies and approaches to enhance user experiences and solve complex problems.
+              With over 5 years of experience in the tech industry, I&apos;ve worked on projects ranging from e-commerce platforms to data visualization tools. I combine technical expertise with creative problem-solving to build solutions that are both beautiful and functional.
             </p>
 
             <div className="grid grid-cols-2 gap-4 mb-4">
@@ -31,11 +27,11 @@ export default function About() {
               </div>
               <div>
                 <h4 className="font-medium">Email:</h4>
-                <p className="text-muted-foreground">ryanlvv@gmail.com</p>
+                <p className="text-muted-foreground">ryan@vanvalkenburg.dev</p>
               </div>
               <div>
                 <h4 className="font-medium">Location:</h4>
-                <p className="text-muted-foreground">Seattle, Wa, USA</p>
+                <p className="text-muted-foreground">San Francisco, CA</p>
               </div>
               <div>
                 <h4 className="font-medium">Availability:</h4>
@@ -43,10 +39,12 @@ export default function About() {
               </div>
             </div>
 
-            <Button className="gap-2">
-              <Download className="h-4 w-4" />
-              Download Resume
-            </Button>
+            <a href="/portfolio-site/resume.pdf" target="_blank" rel="noopener noreferrer">
+              <Button className="gap-2">
+                <Download className="h-4 w-4" />
+                Download Resume
+              </Button>
+            </a>
           </div>
 
           <div className="order-1 md:order-2 flex justify-center">
