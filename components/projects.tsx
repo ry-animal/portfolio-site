@@ -1,120 +1,160 @@
 "use client"
 
-import { useState } from "react"
+import type React from "react"
+
+import { useState, useEffect } from "react"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Github, ExternalLink } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { ExternalLink, Github } from "lucide-react"
+import ScrollReveal from "@/components/scroll-reveal"
 
 type Project = {
-  id: number
+  id: string
   title: string
   description: string
-  image: string
   tags: string[]
-  github?: string
+  image: string
   demo?: string
-  category: "web" | "mobile" | "design"
+  source?: string
 }
 
 const projects: Project[] = [
   {
-    id: 1,
-    title: "E-Commerce Platform",
+    id: "project1",
+    title: "E-commerce Dashboard",
     description:
-      "A full-featured e-commerce platform with product listings, cart functionality, and secure checkout process.",
+      "A comprehensive admin dashboard for e-commerce platforms with real-time analytics, inventory management, and order processing.",
+    tags: ["React", "TypeScript", "Tailwind CSS", "Recharts", "Firebase"],
     image: "/placeholder.svg?height=400&width=600",
-    tags: ["React", "TypeScript", "Node.js", "MongoDB"],
-    github: "https://github.com",
-    demo: "https://example.com",
-    category: "web",
+    demo: "https://example.com/demo",
+    source: "https://github.com/example/project",
   },
   {
-    id: 2,
-    title: "Data Visualization Dashboard",
-    description: "Interactive dashboard displaying complex data sets with customizable charts and filtering options.",
-    image: "/placeholder.svg?height=400&width=600",
-    tags: ["React", "D3.js", "TypeScript", "Firebase"],
-    github: "https://github.com",
-    demo: "https://example.com",
-    category: "web",
-  },
-  {
-    id: 3,
-    title: "Mobile Fitness App",
-    description: "A cross-platform mobile application for tracking workouts, nutrition, and fitness goals.",
-    image: "/placeholder.svg?height=400&width=600",
-    tags: ["React Native", "TypeScript", "Firebase", "Redux"],
-    github: "https://github.com",
-    category: "mobile",
-  },
-  {
-    id: 4,
-    title: "Portfolio Website",
-    description: "A personal portfolio website showcasing projects and skills with 3D elements and animations.",
-    image: "/placeholder.svg?height=400&width=600",
-    tags: ["React", "Three.js", "TypeScript", "Tailwind CSS"],
-    github: "https://github.com",
-    demo: "https://example.com",
-    category: "web",
-  },
-  {
-    id: 5,
-    title: "UI/UX Design System",
-    description: "A comprehensive design system with reusable components and design guidelines for web applications.",
-    image: "/placeholder.svg?height=400&width=600",
-    tags: ["Figma", "Design Systems", "UI/UX"],
-    demo: "https://example.com",
-    category: "design",
-  },
-  {
-    id: 6,
-    title: "Weather App",
+    id: "project2",
+    title: "Fitness Tracker App",
     description:
-      "A weather application providing real-time forecasts and historical weather data with beautiful visualizations.",
+      "Mobile-responsive fitness application that allows users to track workouts, set goals, and visualize progress with interactive charts.",
+    tags: ["Next.js", "MongoDB", "Auth0", "D3.js", "Vercel"],
     image: "/placeholder.svg?height=400&width=600",
-    tags: ["React", "TypeScript", "Weather API", "Chart.js"],
-    github: "https://github.com",
-    demo: "https://example.com",
-    category: "web",
+    demo: "https://example.com/demo",
+  },
+  {
+    id: "project3",
+    title: "Weather Visualization",
+    description:
+      "Interactive weather application with 3D visualizations of weather patterns, forecasts, and historical data comparison.",
+    tags: ["React", "Three.js", "OpenWeather API", "CSS Animations", "Netlify"],
+    image: "/placeholder.svg?height=400&width=600",
+    source: "https://github.com/example/project",
+  },
+  {
+    id: "project4",
+    title: "Task Management System",
+    description:
+      "Collaborative project management tool with drag-and-drop interface, team assignments, and deadline tracking.",
+    tags: ["Vue.js", "Vuex", "Node.js", "Express", "MongoDB", "Socket.io"],
+    image: "/placeholder.svg?height=400&width=600",
+    demo: "https://example.com/demo",
+    source: "https://github.com/example/project",
+  },
+  {
+    id: "project5",
+    title: "Recipe Finder",
+    description:
+      "Personalized recipe recommendation application with filtering options based on dietary restrictions, available ingredients, and prep time.",
+    tags: ["React Native", "Expo", "Firebase", "Spoonacular API"],
+    image: "/placeholder.svg?height=400&width=600",
+    demo: "https://example.com/demo",
+  },
+  {
+    id: "project6",
+    title: "Cryptocurrency Tracker",
+    description:
+      "Real-time cryptocurrency tracking dashboard with price alerts, portfolio management, and historical performance charts.",
+    tags: ["React", "Redux", "CoinGecko API", "Chart.js", "Netlify"],
+    image: "/placeholder.svg?height=400&width=600",
+    source: "https://github.com/example/project",
   },
 ]
 
-export default function Projects() {
-  const [filter, setFilter] = useState<string>("all")
+// Get all unique tags from projects
+const allTags = Array.from(new Set(projects.flatMap((project) => project.tags)))
 
-  const filteredProjects = filter === "all" ? projects : projects.filter((project) => project.category === filter)
+export default function Projects() {
+  const [visibleProjects, setVisibleProjects] = useState<Project[]>(projects)
+  const [selectedTag, setSelectedTag] = useState<string | null>(null)
+  const [isFiltering, setIsFiltering] = useState(false)
+
+  // Handle tag filter changes
+  useEffect(() => {
+    setIsFiltering(true)
+    const timer = setTimeout(() => {
+      if (selectedTag) {
+        setVisibleProjects(projects.filter((project) => project.tags.includes(selectedTag)))
+      } else {
+        setVisibleProjects(projects)
+      }
+      setIsFiltering(false)
+    }, 300)
+
+    return () => clearTimeout(timer)
+  }, [selectedTag])
+
+  const handleTagClick = (tag: string) => {
+    setSelectedTag(selectedTag === tag ? null : tag)
+  }
 
   return (
     <section id="projects" className="py-16 bg-muted/30 flex items-center snap-start">
       <div className="container">
         <h2 className="text-3xl md:text-4xl font-bold mb-3 text-center">
-          My{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">Projects</span>
+          My <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">Projects</span>
         </h2>
         <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-8">
-          A selection of my recent work, showcasing my skills in web development, mobile applications, and UI/UX design.
+          Here are some of my recent projects showcasing my skills and experience in web development and design.
         </p>
 
-        <div className="flex justify-center gap-2 mb-8">
-          <Button variant={filter === "all" ? "default" : "outline"} onClick={() => setFilter("all")}>
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          <Button
+            variant={selectedTag === null ? "default" : "outline"}
+            size="sm"
+            onClick={() => setSelectedTag(null)}
+            className="transition-all duration-300"
+          >
             All
           </Button>
-          <Button variant={filter === "web" ? "default" : "outline"} onClick={() => setFilter("web")}>
-            Web
-          </Button>
-          <Button variant={filter === "mobile" ? "default" : "outline"} onClick={() => setFilter("mobile")}>
-            Mobile
-          </Button>
-          <Button variant={filter === "design" ? "default" : "outline"} onClick={() => setFilter("design")}>
-            Design
-          </Button>
+          {allTags.map((tag) => (
+            <Button
+              key={tag}
+              variant={selectedTag === tag ? "default" : "outline"}
+              size="sm"
+              onClick={() => handleTagClick(tag)}
+              className="transition-all duration-300"
+            >
+              {tag}
+            </Button>
+          ))}
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          style={{
+            minHeight: '400px',
+            transition: 'opacity 300ms ease-in-out',
+            opacity: isFiltering ? 0.6 : 1
+          }}
+        >
+          {visibleProjects.map((project, index) => (
+            <ScrollReveal
+              key={project.id}
+              delay={index * 100}
+              direction={index % 2 === 0 ? "left" : "right"}
+              duration={600}
+            >
+              <ProjectCard project={project} />
+            </ScrollReveal>
           ))}
         </div>
       </div>
@@ -124,7 +164,7 @@ export default function Projects() {
 
 function ProjectCard({ project }: { project: Project }) {
   return (
-    <Card className="overflow-hidden transition-all hover:shadow-lg">
+    <Card className="overflow-hidden transition-all hover:shadow-lg hover:-translate-y-2 duration-300 h-full flex flex-col">
       <div className="relative h-48 w-full overflow-hidden">
         <Image
           src={project.image || "/placeholder.svg"}
@@ -148,23 +188,23 @@ function ProjectCard({ project }: { project: Project }) {
           )}
         </div>
       </CardHeader>
-      <CardContent>
-        <CardDescription className="line-clamp-3">{project.description}</CardDescription>
+      <CardContent className="flex-grow">
+        <p className="text-muted-foreground text-sm">{project.description}</p>
       </CardContent>
-      <CardFooter className="gap-2">
-        {project.github && (
-          <Button variant="outline" size="sm" asChild>
-            <a href={project.github} target="_blank" rel="noopener noreferrer" className="gap-1">
-              <Github className="h-4 w-4" />
-              Code
+      <CardFooter className="flex gap-2">
+        {project.demo && (
+          <Button variant="outline" size="sm" asChild className="gap-1">
+            <a href={project.demo} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="h-4 w-4" />
+              Demo
             </a>
           </Button>
         )}
-        {project.demo && (
-          <Button size="sm" asChild>
-            <a href={project.demo} target="_blank" rel="noopener noreferrer" className="gap-1">
-              <ExternalLink className="h-4 w-4" />
-              Live Demo
+        {project.source && (
+          <Button variant="outline" size="sm" asChild className="gap-1">
+            <a href={project.source} target="_blank" rel="noopener noreferrer">
+              <Github className="h-4 w-4" />
+              Source
             </a>
           </Button>
         )}

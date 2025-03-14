@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
 import { Card, CardContent } from "@/components/ui/card"
@@ -78,6 +78,61 @@ const skillCategories: SkillCategory[] = [
 
 export default function Skills() {
   const [activeTab, setActiveTab] = useState("frontend")
+  const [visibleSkills, setVisibleSkills] = useState<Record<string, boolean>>({})
+  const skillsRef = useRef<HTMLDivElement>(null)
+
+  // Set up intersection observer to trigger animations when skills come into view
+  useEffect(() => {
+    if (!skillsRef.current) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          // Initialize all skills with zero progress
+          const initialSkillsState: Record<string, boolean> = {}
+          skillCategories.forEach(category => {
+            category.skills.forEach(skill => {
+              const key = `${category.id}-${skill.name}`
+              initialSkillsState[key] = true
+            })
+          })
+
+          // Stagger the animations slightly
+          setTimeout(() => {
+            setVisibleSkills(initialSkillsState)
+          }, 200)
+        }
+      },
+      { threshold: 0.2 } // Trigger when 20% of the element is visible
+    )
+
+    observer.observe(skillsRef.current)
+
+    return () => {
+      if (skillsRef.current) {
+        observer.unobserve(skillsRef.current)
+      }
+    }
+  }, [])
+
+  // Reset animations when tab changes
+  useEffect(() => {
+    // Reset all progress values
+    setVisibleSkills({})
+
+    // Stagger the animations slightly
+    setTimeout(() => {
+      const newSkillsState: Record<string, boolean> = {}
+      skillCategories
+        .find(category => category.id === activeTab)
+        ?.skills.forEach(skill => {
+          const key = `${activeTab}-${skill.name}`
+          newSkillsState[key] = true
+        })
+
+      setVisibleSkills(newSkillsState)
+    }, 100)
+  }, [activeTab])
 
   return (
     <section id="skills" className="py-16 bg-background flex items-center snap-start">
@@ -89,35 +144,41 @@ export default function Skills() {
           A comprehensive overview of my technical skills and proficiencies across various domains.
         </p>
 
-        <Tabs defaultValue="frontend" value={activeTab} onValueChange={setActiveTab} className="max-w-3xl mx-auto">
-          <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-6">
-            {skillCategories.map((category) => (
-              <TabsTrigger key={category.id} value={category.id} className="flex items-center gap-2">
-                {category.icon}
-                <span className="hidden sm:inline">{category.name}</span>
-              </TabsTrigger>
-            ))}
-          </TabsList>
+        <div ref={skillsRef}>
+          <Tabs defaultValue="frontend" value={activeTab} onValueChange={setActiveTab} className="max-w-3xl mx-auto">
+            <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-6">
+              {skillCategories.map((category) => (
+                <TabsTrigger key={category.id} value={category.id} className="flex items-center gap-2">
+                  {category.icon}
+                  <span className="hidden sm:inline">{category.name}</span>
+                </TabsTrigger>
+              ))}
+            </TabsList>
 
-          {skillCategories.map((category) => (
-            <TabsContent key={category.id} value={category.id} className="space-y-4">
-              <div className="grid gap-3">
-                {category.skills.map((skill) => (
-                  <div key={skill.name} className="space-y-1">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">{skill.name}</span>
-                      <span className="text-sm text-muted-foreground">{skill.level}%</span>
+            {skillCategories.map((category) => (
+              <TabsContent key={category.id} value={category.id} className="space-y-4">
+                <div className="grid gap-3">
+                  {category.skills.map((skill, index) => (
+                    <div key={skill.name} className="space-y-1">
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">{skill.name}</span>
+                        <span className="text-sm text-muted-foreground">{skill.level}%</span>
+                      </div>
+                      <Progress
+                        value={visibleSkills[`${category.id}-${skill.name}`] ? skill.level : 0}
+                        className="h-2 transition-all duration-1000 ease-out"
+                        style={{ transitionDelay: `${index * 100}ms` }}
+                      />
                     </div>
-                    <Progress value={skill.level} className="h-2" />
-                  </div>
-                ))}
-              </div>
-            </TabsContent>
-          ))}
-        </Tabs>
+                  ))}
+                </div>
+              </TabsContent>
+            ))}
+          </Tabs>
+        </div>
 
         <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          <Card>
+          <Card className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
             <CardContent className="pt-6">
               <div className="flex items-center gap-4 mb-3">
                 <div className="bg-primary/10 p-3 rounded-full">
@@ -135,7 +196,7 @@ export default function Skills() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
             <CardContent className="pt-6">
               <div className="flex items-center gap-4 mb-3">
                 <div className="bg-primary/10 p-3 rounded-full">
@@ -153,7 +214,7 @@ export default function Skills() {
             </CardContent>
           </Card>
 
-          <Card className="md:col-span-2 lg:col-span-1">
+          <Card className="md:col-span-2 lg:col-span-1 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
             <CardContent className="pt-6">
               <div className="flex items-center gap-4 mb-3">
                 <div className="bg-primary/10 p-3 rounded-full">

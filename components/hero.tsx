@@ -8,6 +8,7 @@ import { Environment, Float, PerspectiveCamera } from "@react-three/drei"
 import { Button } from "@/components/ui/button"
 import { ArrowDown } from "lucide-react"
 import type * as THREE from "three"
+import Typewriter from "@/components/typewriter"
 
 export default function Hero() {
   const handleScrollToAbout = (e: React.MouseEvent) => {
@@ -20,6 +21,14 @@ export default function Hero() {
     }
   }
 
+  const specialties = [
+    "Frontend Development",
+    "React & Next.js",
+    "UI/UX Design",
+    "Interactive Experiences",
+    "Modern Web Applications",
+  ]
+
   return (
     <section id="hero" className="relative h-screen w-full overflow-hidden pt-0 md:pt-0 snap-start">
       <Canvas className="absolute inset-0">
@@ -29,16 +38,22 @@ export default function Hero() {
         <HeroScene />
       </Canvas>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 pt-16 md:pt-4">
-        <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-          <span className="block">Hello, I&apos;m</span>
-          <span className="block text-5xl md:text-7xl mt-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600 pb-2">
-            Ryan Van Valkenburg
-          </span>
-        </h1>
-        <p className="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto mb-6">
-          Frontend Developer & UI/UX Designer specializing in creating immersive digital experiences
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="space-y-4 mb-4">
+          <div className="opacity-0 animate-[fadeIn_1s_ease-in-out_0.3s_forwards]">
+            <span className="text-3xl md:text-5xl font-bold text-white">Hello, I&apos;m</span>
+          </div>
+          <div className="opacity-0 animate-[fadeIn_1s_ease-in-out_0.6s_forwards]">
+            <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600 pb-2">
+              Ryan Van Valkenburg
+            </h1>
+          </div>
+        </div>
+        <div className="h-8 md:h-12 mb-6 opacity-0 animate-[fadeIn_1s_ease-in-out_1.2s_forwards]">
+          <p className="text-xl md:text-2xl text-gray-200">
+            Specializing in <Typewriter texts={specialties} typingSpeed={80} className="text-blue-300" />
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-[fadeIn_1s_ease-in-out_1.8s_forwards]">
           <Button
             size="lg"
             className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
@@ -70,7 +85,7 @@ export default function Hero() {
           </Button>
         </div>
       </div>
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 animate-bounce opacity-0 animate-[fadeIn_1s_ease-in-out_2.4s_forwards]">
         <button
           onClick={handleScrollToAbout}
           aria-label="Scroll to About section"
