@@ -82,7 +82,7 @@ html {
 
 /* Optimize section spacing */
 .scroll-container > section {
-  height: 100vh; /* Use exact height instead of min-height */
+  min-height: 100vh; /* Use min-height instead of fixed height */
   width: 100%;
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -93,11 +93,21 @@ html {
   align-items: center;
 }
 
+/* Mobile optimization for sections */
+@media (max-width: 768px) {
+  .scroll-container > section {
+    padding-top: 60px; /* Smaller top padding on mobile */
+    min-height: auto; /* Allow sections to be shorter on mobile */
+    height: auto;
+    scroll-snap-align: start;
+  }
+}
+
 /* Last section can be shorter */
 .scroll-container > section:last-child {
-  min-height: 100vh;
+  min-height: auto;
   height: auto;
-  padding-bottom: 80px; /* Add space for footer */
+  padding-bottom: 40px; /* Reduced space for footer on mobile */
 }
 
 /* Disable default scrollbar */
@@ -116,11 +126,20 @@ html {
   padding-bottom: 0;
 }
 
+/* Mobile container adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
 /* Fix for mobile browsers with dynamic viewport heights */
 @supports (-webkit-touch-callout: none) {
   .scroll-container,
   .scroll-container > section {
-    height: -webkit-fill-available;
+    height: auto;
+    min-height: -webkit-fill-available;
   }
 }
 

@@ -25,18 +25,18 @@ export default function Footer() {
   }, [])
 
   return (
-    <footer ref={footerRef} className="bg-background border-t pt-4 pb-6 w-full">
+    <footer ref={footerRef} className="bg-background border-t pt-2 md:pt-4 pb-3 md:pb-6 w-full">
       <div className="container">
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-4 md:mb-0">
+          <div className="mb-2 md:mb-0">
             <div className="flex items-center">
-              <MapPin className="h-4 w-4 mr-1 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Seattle, Wa</span>
+              <MapPin className="h-3 w-3 md:h-4 md:w-4 mr-1 text-muted-foreground" />
+              <span className="text-xs md:text-sm text-muted-foreground">Seattle, Wa</span>
             </div>
-            <p className="text-sm text-muted-foreground mt-1">&copy; {currentYear} Ryan Van Valkenburg. All rights reserved.</p>
+            <p className="text-xs md:text-sm text-muted-foreground mt-0.5 md:mt-1">&copy; {currentYear} Ryan Van Valkenburg. All rights reserved.</p>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-3 md:gap-4">
             <a
               href="https://github.com/ry-animal"
               target="_blank"
@@ -44,7 +44,7 @@ export default function Footer() {
               className="text-muted-foreground hover:text-foreground transition-colors"
               aria-label="GitHub"
             >
-              <Github className="h-5 w-5" />
+              <Github className="h-4 w-4 md:h-5 md:w-5" />
             </a>
             <a
               href="https://linkedin.com/in/ryanlvv"
@@ -53,7 +53,7 @@ export default function Footer() {
               className="text-muted-foreground hover:text-foreground transition-colors"
               aria-label="LinkedIn"
             >
-              <Linkedin className="h-5 w-5" />
+              <Linkedin className="h-4 w-4 md:h-5 md:w-5" />
             </a>
             <a
               href="https://twitter.com/ryan7vv"
@@ -62,7 +62,7 @@ export default function Footer() {
               className="text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Twitter"
             >
-              <Twitter className="h-5 w-5" />
+              <Twitter className="h-4 w-4 md:h-5 md:w-5" />
             </a>
           </div>
         </div>
